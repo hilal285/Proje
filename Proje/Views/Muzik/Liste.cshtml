@@ -1,0 +1,69 @@
+﻿@model IEnumerable<ProjeAdi.Models.Muzik>
+
+<h2>Kayıtlı Şarkılar</h2>
+
+<table border="1" cellpadding="5" cellspacing="0">
+    <tr>
+        <th>Şarkı İsmi</th>
+        <th>Albüm</th>
+        <th>Sanatçı</th>
+        <th>Süre</th>
+        <th>Çıkış Yılı</th>
+        <th>İşlemler</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.SarkiIsmi</td>
+            <td>@item.AlbumIsmi</td>
+            <td>@item.Artist</td>
+            <td>@item.SarkiSuresi</td>
+            <td>@item.CikisYili</td>
+            <td>
+                <a href="@Url.Action("Duzenle", "Muzik", new { id = item.Id })">Düzenle</a> |
+                <a href="#" onclick="sil(@item.Id)">Sil</a>
+            </td>
+        </tr>
+
+
+
+    }
+    <tr>
+        <td>
+            <a href="/Muzik/Index" style="display:inline-block; margin-bottom:15px; padding:10px 20px; background-color:green; color:white; text-decoration:none; border-radius:5px;">
+                Yeni Kayıt Ekle
+            </a>
+        </td>
+    </tr>
+
+
+
+</table>
+
+
+@section scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function sil(id) {
+            if (confirm("Bu kaydı silmek istediğinize emin misiniz?")) {
+                $.ajax({
+                    url: '/Muzik/Sil/' + id,
+                    type: 'POST',
+                    success: function () {
+                        alert("Kayıt başarıyla silindi.");
+                        location.reload();
+                    },
+                    error: function () {
+                        alert("Kayıt silinemedi!");
+                    }
+                });
+            }
+        }
+    </script>
+
+    
+
+
+
+}

@@ -1,0 +1,36 @@
+﻿@model ProjeAdi.Models.Muzik
+
+<h2>Şarkı Düzenle</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(model => model.Id)
+
+    <label>Şarkı İsmi:</label>
+    <br />
+    @Html.TextBoxFor(model => model.SarkiIsmi)
+    <br />
+
+    <label>Albüm İsmi:</label>
+    <br />
+    @Html.TextBoxFor(model => model.AlbumIsmi)
+    <br />
+
+    <label>Sanatçı:</label>
+    <br />
+    @Html.TextBoxFor(model => model.Artist)
+    <br />
+
+    <label>Şarkı Süresi:</label>
+    <br />
+    @Html.TextBoxFor(model => model.SarkiSuresi)
+    <br />
+
+    <label>Çıkış Yılı:</label>
+    <br />
+    @Html.TextBoxFor(model => model.CikisYili)
+    <br />
+    <br />
+
+    <input type="submit" value="Güncelle" />
+}

@@ -1,0 +1,85 @@
+﻿@model ProjeAdi.Models.Muzik
+
+<h2>Yeni Şarkı Ekle</h2>
+
+<!-- FORM ALANI -->
+<div id="formAlani">
+    <form id="muzikForm">
+        <label>Şarkı İsmi:</label><br />
+        <input type="text" name="SarkiIsmi" /><br />
+
+        <label>Albüm İsmi:</label><br />
+        <input type="text" name="AlbumIsmi" /><br />
+
+        <label>Sanatçı:</label><br />
+        <input type="text" name="Artist" /><br />
+
+        <label>Şarkı Süresi:</label><br />
+        <input type="text" name="SarkiSuresi" /><br />
+
+        <label>Çıkış Yılı:</label><br />
+        <input type="number" name="CikisYili" /><br /><br />
+
+        <button type="submit">Kaydet</button>
+        <a href="/Muzik/Liste" style="display:inline-block; margin-bottom:15px; padding:10px 20px; background-color:#007bff; color:white; text-decoration:none; border-radius:5px;">
+            Kayıtları Listele
+        </a>
+    </form>
+</div>
+
+
+
+<!-- BAŞARI PENCERESİ -->
+<div id="basariPenceresi" style="display:none; position: fixed; top: 30%; left: 35%; width: 30%; background-color: white; border: 2px solid green; padding: 20px; z-index: 9999; text-align: center;">
+    <h3 style="color:green">Kayıt Başarılı!</h3>
+    <p>Yeni şarkı veritabanına eklendi.</p>
+    <button onclick="yeniKayit()">Yeni Kayıt Ekle</button>
+</div>
+
+<!-- HATA PENCERESİ -->
+<div id="hataPenceresi" style="display:none; position: fixed; top: 30%; left: 35%; width: 30%; background-color: white; border: 2px solid red; padding: 20px; z-index: 9999; text-align: center;">
+    <h3 style="color:red">Kayıt Eklenemedi!</h3>
+    <p id="hataMesaji">Bir hata oluştu.</p>
+    <button onclick="yenidenDene()">Yeniden Dene</button>
+</div>
+
+@section scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $("#muzikForm").submit(function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                type: "POST",
+                url: "/Muzik/MuzikEkle",
+                data: $(this).serialize(),
+                success: function (response) {
+                    if (response.success) {
+                        $("#muzikForm")[0].reset();
+                        $("#formAlani").fadeOut();
+                        $("#basariPenceresi").fadeIn();
+                    } else {
+                        $("#formAlani").fadeOut();
+                        $("#hataMesaji").text(response.mesaj || "Bilinmeyen bir hata oluştu.");
+                        $("#hataPenceresi").fadeIn();
+                    }
+                },
+                error: function () {
+                    $("#formAlani").fadeOut();
+                    $("#hataMesaji").text("Sunucuya ulaşılamadı.");
+                    $("#hataPenceresi").fadeIn();
+                }
+            });
+        });
+
+        function yeniKayit() {
+            $("#basariPenceresi").fadeOut();
+            $("#formAlani").fadeIn();
+        }
+
+        function yenidenDene() {
+            $("#hataPenceresi").fadeOut();
+            $("#formAlani").fadeIn();
+        }
+    </script>
+}
